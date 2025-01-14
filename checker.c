@@ -6,11 +6,11 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:47:20 by achu              #+#    #+#             */
-/*   Updated: 2025/01/14 12:58:28 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/14 13:06:59 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-void    ft_check_args(int argc, char *argv[])
-{
+// void    ft_check_args(int argc, char *argv[])
+// {
     
-}
+// }
