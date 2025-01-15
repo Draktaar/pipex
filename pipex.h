@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:55:16 by achu              #+#    #+#             */
-/*   Updated: 2025/01/14 18:51:06 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/14 22:30:02 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,7 @@ typedef struct s_pipex
 # include <unistd.h>
 # include "lib/libft/libft.h"
 # include "lib/printf/ft_printf.h"
+
+void	ft_parse_cmds(t_pipex *data, int argc, char *argv[]);
 
 #endif
