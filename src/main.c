@@ -6,35 +6,36 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 19:45:09 by achu              #+#    #+#             */
-/*   Updated: 2025/01/14 22:06:54 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/17 18:42:42 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_check_args(int argc, char *argv[])
-{
-	if (argc < 4 + ARG0)
-		ft_putstr_fd("Less than four arguments", 2);
-
-	if (access(argv[1], R_OK) == -1)
-		return (ft_putstr_fd("Infile no read permission", 2), 0);
-	else if (open(argv[1], O_RDONLY) < 0)
-		return (ft_putstr_fd("Infile does not open", 2), 0);
-
-	if (access(argv[argc], W_OK) == -1)
-		return (ft_putstr_fd("Outfile no write permission", 2), 0);
-	else if (open(argv[argc], O_WRONLY) < 0)
-		return (ft_putstr_fd("Outfile does not open", 2), 0);
-	
-	return (0);
-}
-
-int	main(int argc, char *argv[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipex	data;
 
+	ft_parse_env(&data, envp);
+	ft_parse_path(&data);
 	ft_parse_cmds(&data, argc, argv);
-	
-	return 0;
+	ft_parse_args(&data, argc, argv);
+	if (!ft_check_args(argc, argv))
+		return (ft_clean_up(&data), EXIT_FAILURE);
+
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while (data.list_cmds[i])
+	{
+		temp = ft_check_cmd(data, data.list_cmds[i][0]);
+		if (!temp)
+			return (error("Error: command not found"), EXIT_FAILURE);
+		i++;
+	}
+
+	//ft_exec(&data);
+	ft_clean_up(&data);
+	return (EXIT_SUCCESS);
 }

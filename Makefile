@@ -6,7 +6,7 @@
 #    By: achu <achu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/14 12:53:14 by achu              #+#    #+#              #
-#    Updated: 2025/01/14 19:42:06 by achu             ###   ########.fr        #
+#    Updated: 2025/01/17 18:33:24 by achu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,13 @@ NAME = pipex
 INCLUDE = includes
 LIBFT =  lib/libft
 PRINTF =  lib/printf
-HEADERS = $(LIBFT)/libft.h $(PRINTF)/ft_printf.h pipex.h
+HEADERS = $(LIBFT)/libft.h $(PRINTF)/ft_printf.h src/pipex.h
 
-SRC =	main.c \
-		parser.c \
+SRC =	src/main.c \
+		src/parser.c \
+		src/checker.c \
+		src/execute.c \
+		src/cleaner.c \
 
 OBJS = $(SRC:.c=.o)
 
@@ -28,7 +31,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFT)
 	$(MAKE) -C $(PRINTF)
-	$(CC) $(OBJS) $(LIBFT)/libft.a $(PRINTF)/printf.a -o $(NAME)
+	$(CC) $(OBJS) -g3 $(LIBFT)/libft.a $(PRINTF)/printf.a -o $(NAME)
 
 %.o: %.c
 	$(CC) $(INCLUDES) -I $(LIBFT) $(PRINTF) -c $< -o $@

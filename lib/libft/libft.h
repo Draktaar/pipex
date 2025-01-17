@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:58:59 by achu              #+#    #+#             */
-/*   Updated: 2024/12/12 13:42:02 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/17 14:28:55 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 t_list	*ft_lstnew(void *content);
 int		ft_lstsize(t_list *lst);
+
+void	error(char *s);
 
 //*** Libft functions ***
 int		ft_atoi(const char *str);

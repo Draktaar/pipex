@@ -6,7 +6,7 @@
 #    By: achu <achu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 11:00:14 by achu              #+#    #+#              #
-#    Updated: 2024/12/12 13:42:26 by achu             ###   ########.fr        #
+#    Updated: 2025/01/17 14:29:09 by achu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CFLAGS = -Wall -Wextra -Werror
 NAME = libft.a
 INCDIR = includes
 
-SRC =	ft_atoi.c \
+SRC =	error.c \
+		ft_atoi.c \
 		ft_bzero.c \
 		ft_calloc.c \
 		ft_isalnum.c \
