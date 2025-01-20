@@ -6,16 +6,11 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:33:58 by achu              #+#    #+#             */
-/*   Updated: 2025/01/20 16:58:40 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/20 17:28:01 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-int	ft_child(t_pipex *data)
-{
-	
-}
 
 int	ft_exec(t_pipex *data)
 {
@@ -23,7 +18,7 @@ int	ft_exec(t_pipex *data)
 	int *fd[2];
 
 	i = 0;
-	(*fd)[2] = ft_calloc((*data).size_cmds + 1, sizeof(int[2]));
+	(*fd)[2] = (int *)ft_calloc((*data).size_cmds + 1, sizeof(int[2]));
 	if (!(*fd)[2])
 		return (1);
 	dup2((*data).infile_fd, STDIN_FILENO);
