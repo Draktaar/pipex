@@ -6,43 +6,58 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:33:58 by achu              #+#    #+#             */
-/*   Updated: 2025/01/17 18:31:38 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/20 16:58:40 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+int	ft_child(t_pipex *data)
+{
+	
+}
+
 int	ft_exec(t_pipex *data)
 {
-	int pipefd[2];
-	int	pid1;
-	int	pid2;
+	int	i;
+	int *fd[2];
 
+	i = 0;
+	(*fd)[2] = ft_calloc((*data).size_cmds + 1, sizeof(int[2]));
+	if (!(*fd)[2])
+		return (1);
 	dup2((*data).infile_fd, STDIN_FILENO);
-	pid1 = fork();
-	if (pid1 < 0)
-		return (1);
-	if (pid1 == 0)
+	while (i < (*data).size_cmds)
 	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDIN_FILENO);
-		close(pipefd[1]);
-		execve((*data).list_cmds[0][0], (*data).list_cmds[0], NULL);
-	}
+		int		j;
+		int		pid;
+		char	*cmd;
 
-	pid2 = fork();
-	if (pid2 < 0)
-		return (1);
-	if (pid2 == 0)
-	{
-		close(pipefd[1]);
-		dup2(pipefd[0], STDOUT_FILENO);
-		close(pipefd[0]);
-		execve((*data).list_cmds[1][0], (*data).list_cmds[1], NULL);
+		j = 0;
+		cmd = ft_check_cmd(*data, data->list_cmds[i][0]);
+		if (!cmd)
+			return (1);
+		pid = fork();
+		if (pid < 0)
+			return (1);
+		if (pid == 0)
+		{
+			dup2(fd[i][1], STDIN_FILENO);
+			if (i == (*data).size_cmds - 1)
+				dup2(data->outfile_fd, STDOUT_FILENO);
+			else
+				dup2(fd[i - 1][0], STDOUT_FILENO);
+			while (j < (*data).size_cmds)
+			{
+				close(fd[j][0]);
+				close(fd[j][1]);
+				j++;
+			}
+			execve(cmd, (*data).list_cmds[i], NULL);
+			error("Failed execute program");
+			exit(EXIT_FAILURE);
+		}
+		i++;
 	}
-	close(pipefd[0]);
-	close(pipefd[1]);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
-	return (0);
+	return (EXIT_SUCCESS);
 }
