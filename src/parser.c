@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:56:54 by achu              #+#    #+#             */
-/*   Updated: 2025/01/20 15:45:17 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/21 14:26:02 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_parse_args(t_pipex *data, int argc, char *argv[])
 {
 	data->infile_fd = open(argv[1], O_RDONLY);
-    data->outfile_fd = open(argv[argc - 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+    data->outfile_fd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 }
 
 void	ft_parse_env(t_pipex *data, char *envp[])

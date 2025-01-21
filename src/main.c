@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 19:45:09 by achu              #+#    #+#             */
-/*   Updated: 2025/01/20 17:15:13 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/21 14:16:33 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,5 @@ int	main(int argc, char *argv[], char *envp[])
 	ft_parse_cmds(&data, argc, argv);
 	ft_parse_args(&data, argc, argv);
 	ft_exec(&data);
-	ft_clean_up(&data);
 	return (EXIT_SUCCESS);
 }

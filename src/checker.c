@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:47:20 by achu              #+#    #+#             */
-/*   Updated: 2025/01/20 15:45:36 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/21 14:29:40 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,11 @@ int	ft_check_args(int argc, char *argv[])
 	else if (open(argv[1], O_RDONLY) < 0)
 		return (error("Infile does not open\n"), 0);
 
-	if (access(argv[argc - 1], W_OK) < 0)
-		return (error("Outfile no write permission\n"), 0);
-	else if (open(argv[argc - 1], O_WRONLY) < 0)
+	if (open(argv[argc - 1], open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0644)) < 0)
 		return (error("Outfile does not open\n"), 0);
+	else if (access(argv[argc - 1], W_OK) < 0)
+		return (error("Outfile no write permission\n"), 0);
+
 
 	return (1);
 }
