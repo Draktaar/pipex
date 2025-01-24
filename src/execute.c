@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:33:58 by achu              #+#    #+#             */
-/*   Updated: 2025/01/24 14:06:27 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/24 15:20:38 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	ft_pipex(t_pipex *data)
 		{
 			temp = ft_check_cmd(*data, data->list_cmds[i][0]);
 			if (!temp)
-				return (error("Command not found"), EXIT_FAILURE);
+				return (EXIT_FAILURE);
 			free(data->list_cmds[i][0]);
 			data->list_cmds[i][0] = temp;
 		}

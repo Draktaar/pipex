@@ -1,33 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strdlen.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/13 19:45:09 by achu              #+#    #+#             */
-/*   Updated: 2025/01/24 18:36:38 by achu             ###   ########.fr       */
+/*   Created: 2025/01/24 14:42:15 by achu              #+#    #+#             */
+/*   Updated: 2025/01/24 15:04:41 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include <string.h>
 
-int	main(int argc, char *argv[], char *envp[])
+size_t	ft_strdlen(const char **strd)
 {
-	t_pipex	data;
+	size_t	i;
 
-	if (ft_check_args(argc, argv))
-		return (EXIT_FAILURE);
-	if (!ft_strncmp("here_doc", argv[2], 8))
-	{
-		
-	}
-	else
-	{
-		if (!ft_parse_args(&data, argc, argv, envp))
-			return (ft_clean_up(&data), EXIT_FAILURE);
-		ft_pipex(&data);
-	}
-	ft_clean_up(&data);
-	return (EXIT_SUCCESS);
+	i = 0;
+	while (strd[i])
+		i++;
+	return (i);
 }

@@ -6,19 +6,13 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:56:54 by achu              #+#    #+#             */
-/*   Updated: 2025/01/24 14:30:55 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/24 15:08:47 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_parse_args(t_pipex *data, int argc, char *argv[])
-{
-	data->infile_fd = open(argv[1], O_RDONLY);
-	data->outfile_fd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-}
-
-char	**ft_parse_env(char *envp[])
+static char	**ft_parse_env(char *envp[])
 {
 	int		i;
 	char	**path;
@@ -33,53 +27,73 @@ char	**ft_parse_env(char *envp[])
 				return (NULL);
 			return (path);
 		}
-		else
-			return (NULL);
 		i++;
 	}
 	return (NULL);
 }
 
-char	*ft_parse_path(t_pipex *data)
+static char	**ft_parse_paths(char **env)
 {
 	int		i;
-	int		len;
+	char	**sub;
 	char	*temp;
 
 	i = 0;
-	len = ft_strlen((*data).path_cmds[0]);
-	while ((*data).path_cmds[i])
+	sub = (char **)malloc((ft_strdlen(env) + 1) * sizeof(char *));
+	if (!sub)
+		return (NULL);
+	while (env[i])
 	{
 		if (i == 0)
 		{
-			temp = ft_substr((*data).path_cmds[0], 5, len);
-			if (!temp)
-				return ;
-			free(data->path_cmds[0]);
-			data->path_cmds[0] = temp;
+			sub[i] = ft_substr(env[0], 5, ft_strlen(env[0]));
+			if (!sub)
+				return (free(sub), NULL);
 		}
-		temp = ft_strjoin((*data).path_cmds[i], "/");
-		free(data->path_cmds[i]);
-		data->path_cmds[i] = temp;
+		sub[i] = ft_strjoin(env[i], "/");
+		if (!sub[i])
+			return (free(sub), NULL);
 		i++;
 	}
+	return (sub);
 }
 
-void	ft_parse_cmds(t_pipex *data, int argc, char *argv[])
+static char	**ft_parse_cmds(int argc, char *argv[])
 {
-	int	i;
+	int		i;
+	char	**cmds;
 
 	i = 0;
-	data->list_cmds = (char ***)calloc(argc - 2, sizeof (char **));
-	if (!data->list_cmds)
-		return (exit(EXIT_FAILURE));
+	cmds = (char ***)ft_calloc((argc - 3) + 1, sizeof (char **));
+	if (!cmds)
+		return (NULL);
 	while (i + 2 < argc - 1)
 	{
-		data->list_cmds[i] = ft_split(argv[i + 2], ' ');
-		if (!data->list_cmds[i])
-			return (exit(EXIT_FAILURE));
+		cmds[i] = ft_split(argv[i + 2], ' ');
+		if (!cmds[i])
+			return (clear_cmds(cmds), NULL);
 		i++;
 	}
-	data->list_cmds[i] = 0;
-	data->size_cmds = i;
+	cmds[i] = 0;
+	return (cmds);
+}
+
+int	ft_parse_args(t_pipex *data, int argc, char *argv[], char *envp[])
+{
+	char	**env;
+	char	**path;
+
+	env = ft_parse_env(envp);
+	if (!env)
+		return (0);
+	data->path_cmds = ft_parse_paths(env);
+	clear_path(env);
+	if (!data->path_cmds)
+		return (0);	
+	data->list_cmds = ft_parse_cmds(argc, argv);
+	if (!data->list_cmds)
+		return (0);
+	data->infile_fd = open(argv[1], O_RDONLY);
+	data->outfile_fd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	return (1);
 }

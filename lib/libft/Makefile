@@ -6,7 +6,7 @@
 #    By: achu <achu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 11:00:14 by achu              #+#    #+#              #
-#    Updated: 2025/01/17 14:29:09 by achu             ###   ########.fr        #
+#    Updated: 2025/01/24 14:43:41 by achu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRC =	error.c \
 		ft_putstr_fd.c \
 		ft_split.c \
 		ft_strchr.c \
+		ft_strdlen.c \
 		ft_strdup.c \
 		ft_striteri.c \
 		ft_strjoin.c \
