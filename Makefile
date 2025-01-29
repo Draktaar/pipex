@@ -6,7 +6,7 @@
 #    By: achu <achu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/14 12:53:14 by achu              #+#    #+#              #
-#    Updated: 2025/01/28 23:49:50 by achu             ###   ########.fr        #
+#    Updated: 2025/01/29 14:03:03 by achu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,10 +19,11 @@ PRINTF =  lib/printf
 HEADERS = $(LIBFT)/libft.h $(PRINTF)/ft_printf.h src/pipex.h
 
 SRC =	src/main.c \
-		src/parser.c \
 		src/checker.c \
+		src/parser.c \
 		src/execute.c \
 		src/cleaner.c \
+		src/bonus.c \
 
 OBJS = $(SRC:.c=.o)
 

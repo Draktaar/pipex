@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:33:58 by achu              #+#    #+#             */
-/*   Updated: 2025/01/29 01:37:11 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 18:11:10 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ static void	wait_children(t_pipex *data)
 
 static pid_t	exe_child(t_pipex *data, int i)
 {
-	int		fd[2];
 	pid_t	pid;
+	int		fd[2];
 	char	***cmd;
-
 
 	cmd = (*data).list_cmds;
 	if (pipe(fd) < 0)
@@ -45,6 +44,7 @@ static pid_t	exe_child(t_pipex *data, int i)
 		close(fd[1]);
 		execve(cmd[i][0], cmd[i], NULL);
 		error("Error: Failed execute program");
+		ft_clean_up(data);
 		exit(EXIT_FAILURE);
 	}
 	close(fd[1]);
@@ -67,6 +67,7 @@ static pid_t	exe_last(t_pipex *data, int i)
 		dup2(data->outfile_fd, STDOUT_FILENO);
 		execve(cmd[i][0], cmd[i], NULL);
 		error("Error: Failed execute program");
+		ft_clean_up(data);
 		exit(EXIT_FAILURE);
 	}
 	return (pid);
@@ -84,7 +85,7 @@ int	ft_pipex(t_pipex *data)
 		{
 			temp = ft_check_cmd(*data, data->list_cmds[i][0]);
 			if (!temp)
-				return (EXIT_FAILURE);
+				continue ;
 			free(data->list_cmds[i][0]);
 			data->list_cmds[i][0] = temp;
 		}
@@ -96,5 +97,6 @@ int	ft_pipex(t_pipex *data)
 	}
 	data->children[i] = 0;
 	wait_children(data);
+	ft_clean_up(data);
 	return (EXIT_SUCCESS);
 }

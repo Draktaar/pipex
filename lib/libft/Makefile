@@ -6,7 +6,7 @@
 #    By: achu <achu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 11:00:14 by achu              #+#    #+#              #
-#    Updated: 2025/01/28 17:45:17 by achu             ###   ########.fr        #
+#    Updated: 2025/01/29 18:34:58 by achu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,7 +61,7 @@ SRC =	error.c \
 		ft_lstmap_bonus.c \
 		ft_lstnew_bonus.c \
 		ft_lstsize_bonus.c \
-		get_next_line_bonus.c \
+		get_next_line.c \
 
 OBJS = $(SRC:.c=.o)
 

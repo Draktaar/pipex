@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:56:54 by achu              #+#    #+#             */
-/*   Updated: 2025/01/29 01:14:55 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 14:43:34 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static char	***ft_parse_cmds(int argc, char *argv[])
 	return (cmds);
 }
 
-static	pid_t *ft_parse_pid(int argc, char *argv[])
+static pid_t	*ft_parse_pid(int argc, char *argv[])
 {
 	int		i;
 	int		step;
@@ -95,23 +95,22 @@ static	pid_t *ft_parse_pid(int argc, char *argv[])
 	children = (pid_t *)ft_calloc((argc - step), sizeof(pid_t));
 	if (!children)
 		return (NULL);
-	ft_printf("%i\n", argc - step);
 	return (children);
 }
 
-int	ft_parse_args(t_pipex *data, int argc, char *argv[], char *envp[])
+int	ft_parse_args(t_pipex *data, int ac, char *av[], char *ep[])
 {
 	char	**env;
 	char	**path;
 
-	data->children = ft_parse_pid(argc, argv);
+	data->children = ft_parse_pid(ac, av);
 	if (!data->children)
 		return (0);
-	env = ft_parse_env(envp);
+	env = ft_parse_env(ep);
 	if (!env)
 		return (0);
 	data->path_cmds = ft_parse_paths(env);
-	data->list_cmds = ft_parse_cmds(argc, argv);
+	data->list_cmds = ft_parse_cmds(ac, av);
 	clear_double(env);
 	if (!data->path_cmds || !data->list_cmds)
 		return (ft_clean_up(data), 0);
