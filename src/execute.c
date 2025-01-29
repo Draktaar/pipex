@@ -6,19 +6,33 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:33:58 by achu              #+#    #+#             */
-/*   Updated: 2025/01/24 15:20:38 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 01:08:19 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-#include "pipex.h"
+static void	wait_children(t_pipex *data)
+{
+	int	i;
 
-static int	exe_child(char ***cmd, int i)
+	i = 0;
+	while (data->children[i])
+	{
+		if (data->children[i] != -1)
+			waitpid(data->children[i], NULL, 0);
+		i++;
+	}
+}
+
+static pid_t	exe_child(t_pipex *data, int i)
 {
 	int		fd[2];
-	int		pid;
+	pid_t	pid;
+	char	***cmd;
 
+
+	cmd = (*data).list_cmds;
 	if (pipe(fd) < 0)
 		return (error("Error: Pipe"), EXIT_FAILURE);
 	pid = fork();
@@ -36,12 +50,12 @@ static int	exe_child(char ***cmd, int i)
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
-	return (EXIT_SUCCESS);
+	return (pid);
 }
 
-static int	exe_last(t_pipex *data, int i)
+static pid_t	exe_last(t_pipex *data, int i)
 {
-	int		pid;
+	pid_t	pid;
 	char	***cmd;
 
 	cmd = (*data).list_cmds;
@@ -55,7 +69,7 @@ static int	exe_last(t_pipex *data, int i)
 		error("Failed execute program");
 		exit(EXIT_FAILURE);
 	}
-	return (EXIT_SUCCESS);
+	return (pid);
 }
 
 int	ft_pipex(t_pipex *data)
@@ -76,10 +90,11 @@ int	ft_pipex(t_pipex *data)
 			data->list_cmds[i][0] = temp;
 		}
 		if (i != (*data).size_cmds - 1)
-			exe_child(data->list_cmds, i);
+			data->children[i] = exe_child(data, i);
 		else
-			exe_last(data, i);
+			data->children[i] = exe_last(data, i);
 		i++;
 	}
+	wait_children(data);
 	return (EXIT_SUCCESS);
 }

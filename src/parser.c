@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:56:54 by achu              #+#    #+#             */
-/*   Updated: 2025/01/24 15:08:47 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 01:00:15 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,43 +39,63 @@ static char	**ft_parse_paths(char **env)
 	char	*temp;
 
 	i = 0;
-	sub = (char **)malloc((ft_strdlen(env) + 1) * sizeof(char *));
+	sub = (char **)malloc((ft_strlen_dbl(env) + 1) * sizeof(char *));
 	if (!sub)
 		return (NULL);
 	while (env[i])
 	{
-		if (i == 0)
-		{
-			sub[i] = ft_substr(env[0], 5, ft_strlen(env[0]));
-			if (!sub)
-				return (free(sub), NULL);
-		}
 		sub[i] = ft_strjoin(env[i], "/");
 		if (!sub[i])
-			return (free(sub), NULL);
+			return (clear_double(sub), NULL);
 		i++;
 	}
+	temp = ft_substr(sub[0], 5, ft_strlen(env[0]));
+	if (!temp)
+		return (clear_double(sub), NULL);
+	free(sub[0]);
+	sub[0] = temp;
+	sub[i] = 0;
 	return (sub);
 }
 
-static char	**ft_parse_cmds(int argc, char *argv[])
+static char	***ft_parse_cmds(int argc, char *argv[])
 {
 	int		i;
-	char	**cmds;
+	int		step;
+	char	***cmds;
 
 	i = 0;
-	cmds = (char ***)ft_calloc((argc - 3) + 1, sizeof (char **));
+	step = 2;
+	if (ft_strncmp("here_doc", argv[1], 8) == 0)
+		step++;
+	cmds = (char ***)ft_calloc((argc - step), sizeof(char **));
 	if (!cmds)
 		return (NULL);
-	while (i + 2 < argc - 1)
+	while (step + i < argc - 1)
 	{
-		cmds[i] = ft_split(argv[i + 2], ' ');
+		cmds[i] = ft_split(argv[step + i], ' ');
 		if (!cmds[i])
-			return (clear_cmds(cmds), NULL);
+			return (clear_triple(cmds), NULL);
 		i++;
 	}
 	cmds[i] = 0;
 	return (cmds);
+}
+
+static	pid_t *ft_parse_pid(int argc, char *argv[])
+{
+	int		i;
+	int		step;
+	pid_t	*children;
+
+	i = 0;
+	step = 2;
+	if (ft_strncmp("here_doc", argv[1], 8) == 0)
+		step++;
+	children = (pid_t *)ft_calloc((argc - step), sizeof(pid_t));
+	if (!children)
+		return (NULL);
+	return (children);
 }
 
 int	ft_parse_args(t_pipex *data, int argc, char *argv[], char *envp[])
@@ -83,17 +103,17 @@ int	ft_parse_args(t_pipex *data, int argc, char *argv[], char *envp[])
 	char	**env;
 	char	**path;
 
+	data->children = ft_parse_pid(argc, argv);
+	if (!data->children)
+		return (0);
 	env = ft_parse_env(envp);
 	if (!env)
 		return (0);
 	data->path_cmds = ft_parse_paths(env);
-	clear_path(env);
-	if (!data->path_cmds)
-		return (0);	
 	data->list_cmds = ft_parse_cmds(argc, argv);
-	if (!data->list_cmds)
-		return (0);
-	data->infile_fd = open(argv[1], O_RDONLY);
-	data->outfile_fd = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	clear_double(env);
+	if (!data->path_cmds || !data->list_cmds)
+		return (ft_clean_up(data), 0);
+	data->size_cmds = ft_strlen_trpl((*data).list_cmds);
 	return (1);
 }

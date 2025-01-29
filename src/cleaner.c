@@ -6,53 +6,62 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:23:13 by achu              #+#    #+#             */
-/*   Updated: 2025/01/24 14:28:07 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 01:02:22 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	clear_path(char **paths)
+void	clear_double(char **ptr)
 {
 	int	i;
 
 	i = 0;
-	if (!paths || !*paths)
+	if (!ptr)
 		return ;
-	while (paths[i])
+	while (ptr[i])
 	{
-		free(paths[i]);
+		free(ptr[i]);
 		i++;
 	}
-	free(paths);
+	free(ptr);
 }
 
-void	clear_cmds(char ***cmds)
+void	clear_triple(char ***ptr)
 {
 	int	i;
 	int	j;
 
-	i = 0;
-	if (!cmds || !*cmds || !**cmds)
+	if (!ptr)
 		return ;
-	while (cmds[i])
+	i = 0;
+	while (ptr[i])
 	{
 		j = 0;
-		while (cmds[i][j])
+		while (ptr[i][j])
 		{
-			free(cmds[i][j]);
+			free(ptr[i][j]);
 			j++;
 		}
-		free(cmds[i]);
+		free(ptr[i]);
 		i++;
 	}
-	free(cmds);
+	free(ptr);
+}
+
+int	ft_clear_fd(t_pipex *data)
+{
+	if ((*data).infile_fd != -1)
+		close (data->infile_fd);
+	if ((*data).outfile_fd != -1)
+		close (data->infile_fd);
 }
 
 void	ft_clean_up(t_pipex *data)
 {
-	clear_cmds(data->list_cmds);
-	clear_path(data->path_cmds);
-	close(data->infile_fd);
-	close(data->outfile_fd);
+	if (data->children)
+		free(data->children);
+	clear_triple(data->list_cmds);
+	clear_double(data->path_cmds);
+	ft_clear_fd(data);
 }

@@ -6,7 +6,7 @@
 #    By: achu <achu@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/14 12:53:14 by achu              #+#    #+#              #
-#    Updated: 2025/01/17 18:33:24 by achu             ###   ########.fr        #
+#    Updated: 2025/01/28 23:49:50 by achu             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,10 +31,10 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(MAKE) -C $(LIBFT)
 	$(MAKE) -C $(PRINTF)
-	$(CC) $(OBJS) -g3 $(LIBFT)/libft.a $(PRINTF)/printf.a -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -g3 $(LIBFT)/libft.a $(PRINTF)/printf.a -o $(NAME)
 
 %.o: %.c
-	$(CC) $(INCLUDES) -I $(LIBFT) $(PRINTF) -c $< -o $@
+	$(CC) $(INCLUDES) -g3 -I $(LIBFT) $(PRINTF) -c $< -o $@
 
 $(OBJS): $(HEADERS)
 

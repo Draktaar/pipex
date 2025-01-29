@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:55:16 by achu              #+#    #+#             */
-/*   Updated: 2025/01/24 18:03:30 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 00:56:45 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 
 typedef struct s_pipex
 {
+	pid_t	*children;
 	int		infile_fd;
 	int		outfile_fd;
 
@@ -32,12 +33,14 @@ typedef struct s_pipex
 	char	***list_cmds;
 }	t_pipex;
 
+
 int		ft_parse_args(t_pipex *data, int argc, char *argv[], char *envp[]);
 int		ft_check_args(int argc, char *argv[]);
+int		ft_clear_fd(t_pipex *data);
 char	*ft_check_cmd(t_pipex data, char *cmd);
 int		ft_pipex(t_pipex *data);
 void	ft_clean_up(t_pipex *data);
-void	clear_path(char **paths);
-void	clear_cmds(char ***cmds);
+void	clear_double(char **paths);
+void	clear_triple(char ***cmds);
 
 #endif
