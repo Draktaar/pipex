@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 18:56:54 by achu              #+#    #+#             */
-/*   Updated: 2025/01/29 01:00:15 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 01:14:55 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ static	pid_t *ft_parse_pid(int argc, char *argv[])
 	children = (pid_t *)ft_calloc((argc - step), sizeof(pid_t));
 	if (!children)
 		return (NULL);
+	ft_printf("%i\n", argc - step);
 	return (children);
 }
 

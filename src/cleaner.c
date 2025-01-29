@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:23:13 by achu              #+#    #+#             */
-/*   Updated: 2025/01/29 01:02:22 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/29 01:21:33 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_clear_fd(t_pipex *data)
 	if ((*data).infile_fd != -1)
 		close (data->infile_fd);
 	if ((*data).outfile_fd != -1)
-		close (data->infile_fd);
+		close (data->outfile_fd);
 }
 
 void	ft_clean_up(t_pipex *data)
