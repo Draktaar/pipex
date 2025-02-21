@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:39:53 by achu              #+#    #+#             */
-/*   Updated: 2025/01/29 18:34:44 by achu             ###   ########.fr       */
+/*   Updated: 2025/01/30 19:13:55 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static char	*find_next_line(char *buffer)
 	line = (char *)ft_calloc((ft_strlen(buffer) - len + 1), sizeof(char));
 	if (!line)
 		return (NULL);
+	len++;
 	while (buffer[len + i] != '\0')
 	{
 		line[i] = buffer[len + i];
@@ -71,8 +72,10 @@ char	*get_cur_line(int fd, char *line)
 
 	if (!line)
 		line = (char *)ft_calloc(1, 1);
+	if (!line)
+		return (NULL);
 	buffer = (char *)ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	if (!buffer || !line)
+	if (!buffer)
 		return (NULL);
 	readbytes = 1;
 	while (readbytes > 0 && !ft_strchr(buffer, '\n'))
@@ -99,7 +102,7 @@ char	*get_next_line(int fd)
 		return (free(buffer), buffer = NULL, NULL);
 	buffer = get_cur_line(fd, buffer);
 	if (!buffer)
-		return (free(buffer), NULL);
+		return (NULL);
 	line = find_cur_line(buffer);
 	buffer = find_next_line(buffer);
 	return (line);

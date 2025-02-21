@@ -1,40 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bonus.c                                            :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 14:33:59 by achu              #+#    #+#             */
-/*   Updated: 2025/01/29 18:18:07 by achu             ###   ########.fr       */
+/*   Updated: 2025/02/21 18:05:51 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	ft_limit(t_pipex *data, int fd[2], char *limit)
+static void	ft_limit(char *limit, int fd)
 {
-	char	*stdin;
 	size_t	len;
+	char	*line;
 
-	close(fd[0]);
 	len = ft_strlen(limit);
-	stdin = get_next_line(STDIN_FILENO);
-	while (stdin)
+	while (1)
 	{
-		if (ft_strncmp(limit, stdin, len) == 0 && (stdin[len] == '\0' || stdin[len] == '\n'))
+		line = get_next_line(STDIN_FILENO);
+		if (ft_strncmp(limit, line, len) == 0 && \
+		(line[len] == '\0' || line[len] == '\n'))
 		{
-			close(fd[1]);
-			free(stdin);
-			ft_clean_up(data);
+			free(line);
 			get_next_line(-1);
-			exit(EXIT_FAILURE);
+			break ;
 		}
-		write(fd[1], stdin, ft_strlen(stdin));
-		free(stdin);
-		stdin = get_next_line(STDIN_FILENO);
+		write(fd, line, ft_strlen(line));
+		free(line);
 	}
-	close(fd[1]);
 }
 
 int	ft_heredoc(t_pipex *data, char *limit)
@@ -48,7 +44,13 @@ int	ft_heredoc(t_pipex *data, char *limit)
 	if (pid < 0)
 		return (error("Error: Fork"), EXIT_FAILURE);
 	else if (pid == 0)
-		ft_limit(data, fd, limit);
+	{
+		close(fd[0]);
+		ft_limit(limit, fd[1]);
+		close(fd[1]);
+		ft_clean_up(data);
+		exit(EXIT_SUCCESS);
+	}
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
