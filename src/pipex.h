@@ -6,13 +6,14 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:55:16 by achu              #+#    #+#             */
-/*   Updated: 2025/02/21 18:32:36 by achu             ###   ########.fr       */
+/*   Updated: 2025/03/09 17:49:14 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
+# include <stdio.h>
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
@@ -24,12 +25,13 @@
 typedef struct s_pipex
 {
 	char	**av;
+	char	**env;
+
 	pid_t	*children;
 	int		infile_fd;
 	int		outfile_fd;
 
 	int		size_cmds;
-	char	**path_cmds;
 	char	***list_cmds;
 }	t_pipex;
 

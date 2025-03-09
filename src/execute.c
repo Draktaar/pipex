@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:33:58 by achu              #+#    #+#             */
-/*   Updated: 2025/02/21 18:32:27 by achu             ###   ########.fr       */
+/*   Updated: 2025/03/09 17:48:38 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static pid_t	exe_child(t_pipex *data, int i)
 		ft_dupout(fd);
 		if (data->infile_fd < 0 && i == 0)
 			(ft_clean_up(data), exit(126));
-		temp = ft_check_cmd(data->path_cmds, cmd[i][0]);
+		temp = ft_check_cmd(data->env, cmd[i][0]);
 		if (!temp)
 			(error("Error: Command not found"), ft_clean_up(data), exit(127));
 		execve(temp, cmd[i], NULL);
@@ -68,7 +68,7 @@ static pid_t	exe_last(t_pipex *data, int i)
 	{
 		if (data->outfile_fd < 0)
 			(ft_clean_up(data), exit(126));
-		temp = ft_check_cmd(data->path_cmds, cmd[i][0]);
+		temp = ft_check_cmd(data->env, cmd[i][0]);
 		if (!temp)
 			(error("Error: Command not found"), ft_clean_up(data), exit(127));
 		dup2(data->outfile_fd, STDOUT_FILENO);
