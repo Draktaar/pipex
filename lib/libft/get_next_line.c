@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 13:39:53 by achu              #+#    #+#             */
-/*   Updated: 2025/01/30 19:13:55 by achu             ###   ########.fr       */
+/*   Updated: 2025/03/09 18:32:53 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*find_cur_line(char *buffer)
 }
 
 static char	*find_next_line(char *buffer)
-{	
+{
 	int		i;
 	int		len;
 	char	*line;

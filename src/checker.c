@@ -6,7 +6,7 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 12:47:20 by achu              #+#    #+#             */
-/*   Updated: 2025/03/09 17:46:46 by achu             ###   ########.fr       */
+/*   Updated: 2025/03/10 01:06:15 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ char	*ft_check_cmd(char **envp, char *cmd)
 	char	*path;
 
 	i = 0;
+	if (!cmd)
+		return (NULL);
 	if (access(cmd, X_OK) == 0)
 		return (cmd);
-	while (envp[i])
+	while (envp && envp[i])
 	{
 		temp = ft_strjoin(envp[i], "/");
 		path = ft_strjoin(temp, cmd);
@@ -33,7 +35,7 @@ char	*ft_check_cmd(char **envp, char *cmd)
 		free(path);
 		i++;
 	}
-	return (cmd);
+	return (NULL);
 }
 
 // Check if the outfile exist but cant be opened
@@ -44,8 +46,8 @@ int	ft_check_args(int argc, char *argv[])
 {
 	if (argc < 4 + ARG0)
 		return (error("Error: Need 4 arguments"), 0);
-	// if (access(argv[argc - 1], F_OK) == 0 && access(argv[argc - 1], W_OK) < 0)
-	// 	return (error("Error: Outfile no write permission"), 1);
+	if (access(argv[argc - 1], F_OK) == 0 && access(argv[argc - 1], W_OK) < 0)
+		error("Error: Outfile no write permission");
 	if (ft_strncmp("here_doc", argv[1], 8) == 0)
 	{
 		if (argc < 5 + ARG0)
@@ -54,9 +56,9 @@ int	ft_check_args(int argc, char *argv[])
 	else
 	{
 		if (access(argv[1], F_OK) < 0)
-			return (error("Error: Infile does not exist"), 1);
+			error("Error: Infile does not exist");
 		else if (access(argv[1], R_OK) < 0)
-			return (error("Error: Infile no read permission"), 1);
+			error("Error: Infile no read permission");
 	}
 	return (1);
 }

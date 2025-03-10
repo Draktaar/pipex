@@ -6,23 +6,31 @@
 /*   By: achu <achu@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 13:33:58 by achu              #+#    #+#             */
-/*   Updated: 2025/03/09 17:48:38 by achu             ###   ########.fr       */
+/*   Updated: 2025/03/10 01:07:10 by achu             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static void	wait_children(t_pipex *data)
+static int	wait_children(t_pipex *data)
 {
 	int	i;
+	int	status;
+	int	last_status;
 
 	i = 0;
+	last_status = 0;
 	while (data->children[i])
 	{
-		if (data->children[i] != -1)
-			waitpid(data->children[i], NULL, 0);
+		if (data->children[i] > 0)
+		{
+			waitpid(data->children[i], &status, 0);
+			if (WIFEXITED(status))
+				last_status = WEXITSTATUS(status);
+		}
 		i++;
 	}
+	return (last_status);
 }
 
 static pid_t	exe_child(t_pipex *data, int i)
@@ -84,6 +92,7 @@ static pid_t	exe_last(t_pipex *data, int i)
 int	ft_pipex(t_pipex *data)
 {
 	int		i;
+	int		status;
 
 	i = 0;
 	while (data->list_cmds[i])
@@ -95,7 +104,7 @@ int	ft_pipex(t_pipex *data)
 		i++;
 	}
 	data->children[i] = 0;
-	wait_children(data);
+	status = wait_children(data);
 	ft_clean_up(data);
-	return (EXIT_SUCCESS);
+	return (status);
 }
